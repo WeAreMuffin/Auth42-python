@@ -42,7 +42,7 @@ class Auth42(LdapServer):
         if result is not None:
             alias = result.get("alias")[1]
             return alias
-        
+
         return None
 
     def ldap_get_picture(self, user):
