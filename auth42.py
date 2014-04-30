@@ -10,19 +10,6 @@ class Auth42(LdapServer):
     def __init__(self):
         super(Auth42, self).__init__()
 
-    def ldap_authenticate(self, user, password):
-        """
-        Tries to authenticate user -> Boolean
-        """
-        dn = "uid=" + user + LdapServer._base_dn
-        try:
-            self.server.simple_bind_s(dn, password)
-            response = True
-        except ldap.LDAPError:
-            response = False
-
-        return response
-
     def ldap_get_email(self, user):
         """
         Tries to get email for given user -> String

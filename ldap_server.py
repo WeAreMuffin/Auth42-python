@@ -55,3 +55,16 @@ class LdapServer(object):
             return self.ldap_search(user).get("data")
         except AttributeError:
             return None
+
+    def ldap_authenticate(self, user, password):
+        """
+        Tries to authenticate user -> Boolean
+        """
+        dn = "uid=" + user + LdapServer._base_dn
+        try:
+            self.server.simple_bind_s(dn, password)
+            response = True
+        except ldap.LDAPError:
+            response = False
+
+        return response
