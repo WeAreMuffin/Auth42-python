@@ -44,6 +44,10 @@ class LdapServer(object):
             return None
 
     def _search_not_empty(self, user):
+        """
+        Return data for user if already exists or return a new search
+        -> LDAPObject
+        """
         if self.search is not None:
             if self.search.get("login") == user:
                 return self.search.get("data")
