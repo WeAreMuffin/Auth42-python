@@ -27,8 +27,9 @@ class Auth42(LdapServer):
         """
         Tries to get email for given user -> String
         """
-        result = self.ldap_search(user)
+        result = self._search_not_empty(user)
         if result is not None:
+            result = self.search.get("data")
             alias = result.get("alias")[1]
             return alias
 
@@ -38,8 +39,9 @@ class Auth42(LdapServer):
         """
         Tries to get picture of given user encoded in base64 -> String
         """
-        result = self.ldap_search(user)
+        result = self._search_not_empty(user)
         if result is not None:
+            result = self.search.get("data")
             picture = result.get("picture")[0]
             return base64.b64encode(picture)
 
@@ -49,8 +51,9 @@ class Auth42(LdapServer):
         """
         Tries to get fullname of given user -> String
         """
-        result = self.ldap_search(user)
+        result = self._search_not_empty(user)
         if result is not None:
+            result = self.search.get("data")
             fullname = (result.get("first-name")[0], result.get("last-name")[0])
             return ' '.join(str(name) for name in fullname)
 

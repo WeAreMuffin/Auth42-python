@@ -11,6 +11,7 @@ class LdapServer(object):
 
     def __init__(self):
         self.server = LdapServer._new_connection()
+        self.search = None
 
     @staticmethod
     def _new_connection():
@@ -36,6 +37,17 @@ class LdapServer(object):
         """
         dn = "uid=" + user + LdapServer._base_dn
         try:
-            return self.server.search_s(dn, ldap.SCOPE_SUBTREE)[0][1]
+            data = self.server.search_s(dn, ldap.SCOPE_SUBTREE)[0][1]
+            self.search = {'login': user, 'data': data}
+            return self.search
         except ldap.LDAPError:
+            return None
+
+    def _search_not_empty(self, user):
+        if self.search is not None:
+            if self.search.get("login") == user:
+                return self.search.get("data")
+        try:
+            return self.ldap_search(user).get("data")
+        except AttributeError:
             return None
