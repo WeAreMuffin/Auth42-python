@@ -7,6 +7,7 @@ class LdapServer(object):
     """
 
     _server_url = "ldaps://ldap.42.fr"
+    _base_dn = ",ou=2013,ou=people,dc=42,dc=fr"
 
     def __init__(self):
         self.server = LdapServer._new_connection()
@@ -33,7 +34,7 @@ class LdapServer(object):
         """
         Tries to search for given user -> Dict
         """
-        dn = "uid=" + user + ",ou=2013,ou=people,dc=42,dc=fr"
+        dn = "uid=" + user + LdapServer._base_dn
         try:
             return self.server.search_s(dn, ldap.SCOPE_SUBTREE)[0][1]
         except ldap.LDAPError:
