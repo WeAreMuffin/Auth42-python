@@ -14,7 +14,7 @@ class Auth42(LdapServer):
         """
         Tries to authenticate user -> Boolean
         """
-        dn = "uid=" + user + ",ou=2013,ou=people,dc=42,dc=fr"
+        dn = "uid=" + user + LdapServer._base_dn
         try:
             self.server.simple_bind_s(dn, password)
             response = True
