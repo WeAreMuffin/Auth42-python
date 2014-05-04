@@ -1,4 +1,5 @@
 import base64
+import datetime
 from ldap_server import LdapServer
 
 
@@ -40,5 +41,28 @@ class Auth42(LdapServer):
         if result is not None:
             fullname = (result.get("first-name")[0], result.get("last-name")[0])
             return ' '.join(str(name) for name in fullname)
+
+        return None
+
+    def ldap_get_number(self, user):
+        """
+        Tries to get the number of given user -> String
+        """
+        result = super(Auth42, self)._search_not_empty(user)
+        if result is not None:
+            number = result.get("mobile-phone")[0]
+            return number
+
+        return None
+
+    def ldap_get_birthdate(self, user):
+        """
+        Tries to get birthdate of giver user (format: Y-m-d) -> String
+        """
+        result = super(Auth42, self)._search_not_empty(user)
+        if result is not None:
+            dump = result.get("birth-date")[0]
+            birthdate = datetime.datetime.strptime(dump[:8], '%Y%m%d')
+            return str(birthdate)[:10]
 
         return None
