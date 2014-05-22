@@ -17,8 +17,8 @@ class Auth42(LdapServer):
         """
         result = super(Auth42, self)._search_not_empty(user)
         if result is not None:
-            alias = result.get("alias")[1]
-            return alias
+            alias = result.get("alias")
+            return [m for m in alias if m == user + "@student.42.fr"][0]
 
         return None
 
